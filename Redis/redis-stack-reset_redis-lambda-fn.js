@@ -14,23 +14,10 @@ exports.resetRedis = async function () {
                 reject(err);
             }
             else {
-                // redisClient.expire(KEY, MAX_EXPIRATION);
                 resolve(DEFAULT_BALANCE);
             }
         });
     });
-    // const ret = new Promise((resolve, reject) => {
-    //     redisClient.set(KEY, String(DEFAULT_BALANCE), MAX_EXPIRATION, (err, res) => {
-    //         if (err) {
-    //             reject(err);
-    //         }
-    //         else {
-    //             redisClient.expire(KEY, MAX_EXPIRATION);
-    //             resolve(DEFAULT_BALANCE);
-    //         }
-    //     });
-    // });
-    // const ret = await redisClient.set(KEY, String(DEFAULT_BALANCE), {EX: MAX_EXPIRATION})
 
     await disconnectRedis(redisClient);
     return ret;
