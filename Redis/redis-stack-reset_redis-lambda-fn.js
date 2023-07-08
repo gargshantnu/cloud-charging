@@ -9,16 +9,29 @@ const MAX_EXPIRATION = 60 * 60 * 24 * 30;
 exports.resetRedis = async function () {
     const redisClient = await getRedisClient();
     const ret = new Promise((resolve, reject) => {
-        redisClient.set(KEY, String(DEFAULT_BALANCE), (err, res) => {
+        redisClient.setex(KEY, MAX_EXPIRATION, String(DEFAULT_BALANCE), function(err, result) {
             if (err) {
                 reject(err);
             }
             else {
-                redisClient.expire(KEY, MAX_EXPIRATION);
+                // redisClient.expire(KEY, MAX_EXPIRATION);
                 resolve(DEFAULT_BALANCE);
             }
         });
     });
+    // const ret = new Promise((resolve, reject) => {
+    //     redisClient.set(KEY, String(DEFAULT_BALANCE), MAX_EXPIRATION, (err, res) => {
+    //         if (err) {
+    //             reject(err);
+    //         }
+    //         else {
+    //             redisClient.expire(KEY, MAX_EXPIRATION);
+    //             resolve(DEFAULT_BALANCE);
+    //         }
+    //     });
+    // });
+    // const ret = await redisClient.set(KEY, String(DEFAULT_BALANCE), {EX: MAX_EXPIRATION})
+
     await disconnectRedis(redisClient);
     return ret;
 };
